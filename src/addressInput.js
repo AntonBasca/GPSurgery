@@ -1,18 +1,18 @@
 import React from 'react';
 import { InputField } from 'govuk-react';
-function Inputaoao() {
+
+function AddressInput({ name, value, onChange }) {
     return (
-        <>
-
-            <InputField
-                input={{
-                    name: 'nameInput'
-                }}
-            >
-                ADDRESS
-            </InputField>
-
-        </>
+        <InputField
+            input={{
+                name,
+                value,
+                onChange
+            }}
+        >
+            ADDRESS
+        </InputField>
     );
 }
-export default Inputaoao;
+
+export default AddressInput;

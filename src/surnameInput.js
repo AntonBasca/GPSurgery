@@ -1,18 +1,18 @@
 import React from 'react';
 import { InputField } from 'govuk-react';
-function SurnameInput() {
+
+function SurnameInput({ name, value, onChange }) {
     return (
-        <>
-
-            <InputField
-                input={{
-                    name: 'surnameInput'
-                }}
-            >
-                SURNAME
-            </InputField>
-
-        </>
+        <InputField
+            input={{
+                name,
+                value,
+                onChange,
+            }}
+        >
+            SURNAME
+        </InputField>
     );
 }
+
 export default SurnameInput;

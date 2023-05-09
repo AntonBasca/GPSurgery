@@ -1,14 +1,12 @@
 import React from 'react';
 import { InputField } from 'govuk-react';
 
-function EmailInput(props) {
-    const { value, onChange } = props;
-
+function EmailInput({ name, value, onChange }) {
     return (
         <InputField
             input={{
                 type: 'email',
-                name: 'emailLogin',
+                name: name,
                 value: value,
                 onChange: onChange
             }}

@@ -15,11 +15,24 @@ try {
     die("Connection failed: " . $e->getMessage());
 }
 
-// Get the user data from the database
-// Get the user data from the database
+// Get the user data from the Doctor table
 $stmt = $pdo->prepare("SELECT * FROM Doctor WHERE DocEmail = ?");
 $stmt->execute([$_GET['email']]);
 $user = $stmt->fetch();
+
+// If user not found in Doctor table, check the Patient table
+if (!$user) {
+    $stmt = $pdo->prepare("SELECT * FROM Patient WHERE PatientEmail = ?");
+    $stmt->execute([$_GET['email']]);
+    $user = $stmt->fetch();
+}
+
+// If user not found in Doctor and Patient tables, check the Admin table
+if (!$user) {
+    $stmt = $pdo->prepare("SELECT * FROM Admin WHERE AdminEmail = ?");
+    $stmt->execute([$_GET['email']]);
+    $user = $stmt->fetch();
+}
 
 // Check if user was found
 if ($user) {

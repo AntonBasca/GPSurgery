@@ -25,21 +25,39 @@ function LoginPage() {
         event.preventDefault();
         console.log(email, password);
 
-        fetch(`http://localhost:4000/db.php?email=${email}`, {
-            method: 'GET',
-            headers: {
-                'Content-Type': 'application/json',
-            },
-        })
-            .then((response) => response.json())
-            .then((data) => {
-                if (data && data.DocPassword && password === data.DocPassword) {
-                    setUser(data);
+        Promise.all([
+            fetch(`http://localhost:4000/db.php?table=Doctor&email=${email}`, {
+                method: 'GET',
+                headers: {
+                    'Content-Type': 'application/json',
+                },
+            }),
+            fetch(`http://localhost:4000/db.php?table=Patient&email=${email}`, {
+                method: 'GET',
+                headers: {
+                    'Content-Type': 'application/json',
+                },
+            }),
+            fetch(`http://localhost:4000/db.php?table=Admin&email=${email}`, {
+                method: 'GET',
+                headers: {
+                    'Content-Type': 'application/json',
+                },
+            }),
+        ])
+            .then((responses) => Promise.all(responses.map((response) => response.json())))
+            .then(([doctorData, patientData, adminData]) => {
+                const userFound =
+                    (doctorData && doctorData.DocPassword && password === doctorData.DocPassword) ||
+                    (patientData && patientData.PatientPassword && password === patientData.PatientPassword) ||
+                    (adminData && adminData.AdminPassword && password === adminData.AdminPassword);
+                if (userFound) {
+                    setUser(doctorData || patientData || adminData);
                 } else {
                     setError('Invalid email or password');
                 }
                 console.log('Data received from PHP script:');
-                console.log(data);
+                console.log(doctorData, patientData, adminData);
             })
             .catch((error) => {
                 setError('Failed to retrieve user data');
@@ -48,7 +66,6 @@ function LoginPage() {
             });
     };
 
-    console.log({ email });
 
     return (
         <>

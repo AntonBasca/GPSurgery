@@ -1,22 +1,18 @@
 import React from 'react';
 import { InputField } from 'govuk-react';
 
-function PasswordInput(props) {
-    const { password, onChange } = props;
-
+function PasswordInput({ name, value, onChange }) {
     return (
-        <>
-            <InputField
-                input={{
-                    type: 'password',
-                    name: 'password',
-                    value: password,
-                    onChange: onChange
-                }}
-            >
-                PASSWORD
-            </InputField>
-        </>
+        <InputField
+            input={{
+                type: 'password',
+                name,
+                value,
+                onChange
+            }}
+        >
+            PASSWORD
+        </InputField>
     );
 }
 
