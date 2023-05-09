@@ -16,18 +16,18 @@ try {
 }
 
 // Get the user data from the database
+// Get the user data from the database
 $stmt = $pdo->prepare("SELECT * FROM Doctor WHERE DocEmail = ?");
 $stmt->execute([$_GET['email']]);
 $user = $stmt->fetch();
 
-// Debug output
-var_dump($user);
-
-// Return the user data as JSON
-$json = json_encode($user);
-if ($json === false) {
-    $error = json_last_error_msg();
-    die("JSON encoding failed: $error");
+// Check if user was found
+if ($user) {
+    // Return the user data as JSON
+    echo json_encode($user);
+} else {
+    // Return an error message as JSON
+    echo json_encode(['error' => 'User not found']);
 }
-echo $json;
+
 ?>
